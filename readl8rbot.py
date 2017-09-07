@@ -7,7 +7,6 @@ import datetime
 import tzlocal
 import time
 import postgresql
-from html_telegraph_poster import upload_to_telegraph
 from newspaper import Article
 import os
 import urllib
