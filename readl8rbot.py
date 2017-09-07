@@ -85,7 +85,7 @@ def sendVnW(bot, job):
 	page = telegraph.create_page(title='Visto nel Web', html_content = html_content)
 	url2send = 'http://telegra.ph/{}'.format(page['path'])
 	text = '<b>Good Morning!</b>\n<a href="{}">Here</a> is the post containing {} urls, good reading!!'.format( url2send, contatore) + "\n" + u"\u2063"
-	text = '<a href="{}">{}</a>'.format( url2send, url2send )
+	#text = '<a href="{}">{}</a>'.format( url2send, url2send )
 	bot.sendMessage(chat_id = MY_CHAT_ID, text = text, parse_mode = "Html")
 	
 	ps = db.prepare("UPDATE VistoNelWeb SET done=1 WHERE timestamp < {};".format(timestamp) )
