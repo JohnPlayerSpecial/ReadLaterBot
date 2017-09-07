@@ -21,6 +21,7 @@ DayNameDict = { "LUNEDI" : 0,
 	       "DOMENICA" : 6,
 	      }
 
+
 STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
 TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
 TOKEN_TELEGRAM_2 = os.environ['TOKEN_TELEGRAM_2']
