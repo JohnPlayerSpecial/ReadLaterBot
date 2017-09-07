@@ -4,3 +4,5 @@ tzlocal==1.4
 newspaper3k==0.1.9
 telegram==0.0.1
 postgres==2.2.1
+py-postgresql==1.2.1
+tzlocal==1.4
