@@ -13,35 +13,18 @@ import os
 import urllib
 from telegraph import Telegraph
 
-
-try:
-	STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
-	TOKEN_ALERT = os.environ['TOKEN_ALERT']
-	TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
-	TELEGRAPH_ACCOUNT = os.environ['TELEGRAPH_ACCOUNT']
-	MY_CHAT_ID = int( os.environ['MY_CHAT_ID'] )
-	TELEGRAPH_ACCOUNT = os.environ['TELEGRAPH_ACCOUNT']
-	
-except:
-	hour = datetime.datetime.time(datetime.datetime.now()).hour
-	minute = datetime.datetime.time(datetime.datetime.now()).minute
-	second = datetime.datetime.time(datetime.datetime.now()).second
-	dt = datetime.datetime.combine(datetime.date.today(), datetime.time(hour,minute,second)) + datetime.timedelta(seconds=10)
-	HOUR_I_WANNA_GET_MESSAGE = dt.hour
-	MINUTES_I_WANNA_GET_MESSAGE = dt.minute
-	SECONDS_I_WANNA_GET_MESSAGE = dt.second
-	MY_CHAT_ID = 31923577
-	TELEGRAPH_ACCOUNT = 's'
+STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
+TOKEN_ALERT = os.environ['TOKEN_ALERT']
+TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
+TOKEN_TELEGRAM_2 = os.environ['TOKEN_TELEGRAM_2']
+TELEGRAPH_ACCOUNT = os.environ['TELEGRAPH_ACCOUNT']
+MY_CHAT_ID = int( os.environ['MY_CHAT_ID'] 
 	
 telegraph = Telegraph()
-telegraph.create_account('s')
+telegraph.create_account(TELEGRAPH_ACCOUNT)
 
-TOKEN_TELEGRAM = '352887843:AAGFmxDpBFc9v6__gN6c2kQF9wntbkahtE4'
-TOKEN_TELEGRAM_2 = '408255938:AAEspHUZw2tJ3m1xkjGF3bW6TgWkyycgYzU' #visto web
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-STRING_DB = 'postgres://eygmgbtinfsxrx:1b019452e37816ab12c60b80a6ec1c767bd067e6f78c346e8f76d15f30e4ce9e@ec2-54-75-234-89.eu-west-1.compute.amazonaws.com:5432/d10htgn7cvq4q3'
 STRING_DB = STRING_DB.replace("postgres","pq")
 
 def sendVnW(bot, job):
@@ -53,12 +36,9 @@ def sendVnW(bot, job):
 	timestamp = round( datetime.datetime.now().timestamp() )
 	botVnW = telegram.Bot(TOKEN_TELEGRAM_2)
 	html_content = ""
-	#abc = 'https://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png'
-	#html_content = '<a href="{}" target="_blank"><img src="{}" width="20", height="20"></img></a>'.format(abc,abc)
 	db = postgresql.open(STRING_DB)
 	ps = db.prepare("SELECT * FROM VistoNelWeb WHERE done=0;")
 	resultsList = ps()
-	print('*' * 40)
 	for item in resultsList:
 		url = item[1]
 		photo_file_id = item[2]
@@ -67,7 +47,6 @@ def sendVnW(bot, job):
 		timeAdded = item[6]
 		if url:
 			try:
-				print("\t", url)
 				article = Article(url)
 				article.download()
 				article.parse()
@@ -80,7 +59,6 @@ def sendVnW(bot, job):
 				print("ERROR sendVnW url", url, e)
 		if photo_file_id:
 			try:
-				print("\t", photo_file_id)
 				photo_url = bot.getFile(file_id = photo_file_id).file_path
 				#html_content += '<figure><img src="{}"/><figcaption>Added on {}</figcaption></figure>'.format( photo_url,  timeAdded )
 				#html_content += '<img src="{}"/>'.format( photo_url )
@@ -102,7 +80,7 @@ def sendVnW(bot, job):
 	ps = db.prepare("UPDATE VistoNelWeb SET done=1 WHERE timestamp < {};".format(timestamp) )
 	ps()    
 	print("Check Telegram!") 
-	db.close()
+	#db.close()
 
 def insertDB(url="", timeAdded = "", photo_file_id="", photo_width=0, photo_height=0):
 	global STRING_DB
@@ -112,7 +90,7 @@ def insertDB(url="", timeAdded = "", photo_file_id="", photo_width=0, photo_heig
 	ps()
 	ps = db.prepare("INSERT INTO VistoNelWeb (url,timestamp,timeAdded,photo_file_id,photo_width,photo_height) VALUES ('{}','{}','{}','{}','{}','{}');".format(url, timestamp, timeAdded, photo_file_id, photo_width, photo_height) )
 	ps()      
-	db.close()
+	#db.close()
 
 def getTimeAdded():
 	nowTimestamp = round( datetime.datetime.now().timestamp() )
@@ -171,7 +149,7 @@ def printUpdate(bot,update):
 		
 updater = Updater(TOKEN_TELEGRAM) 
 dp = updater.dispatcher
-updater.dispatcher.add_handler( MessageHandler( Filters.text | Filters.photo , callback = printUpdate) ) #Filters.entity("url")
+updater.dispatcher.add_handler( MessageHandler( Filters.text , callback = printUpdate) ) #Filters.entity("url")
 j = updater.job_queue
 '''
 0 = Mon
