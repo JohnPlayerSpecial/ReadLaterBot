@@ -2,5 +2,4 @@ python_telegram_bot==7.0.1
 telegraph==1.2.1
 tzlocal==1.4
 newspaper3k==0.1.9
-newspaper==0.1.0.7
 telegram==0.0.1
