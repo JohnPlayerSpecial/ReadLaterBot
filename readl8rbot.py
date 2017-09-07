@@ -19,6 +19,8 @@ TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
 TOKEN_TELEGRAM_2 = os.environ['TOKEN_TELEGRAM_2']
 TELEGRAPH_ACCOUNT = os.environ['TELEGRAPH_ACCOUNT']
 MY_CHAT_ID = int( os.environ['MY_CHAT_ID'] 
+HOUR_I_WANNA_GET_MESSAGE = int( os.environ['HOUR_I_WANNA_GET_MESSAGE'] 
+MINUTES_I_WANNA_GET_MESSAGE = int( os.environ['MINUTE_I_WANNA_GET_MESSAGE'] 
 	
 telegraph = Telegraph()
 telegraph.create_account(TELEGRAPH_ACCOUNT)
