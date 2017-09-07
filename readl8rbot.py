@@ -126,7 +126,8 @@ def getMyTimeZoneTime():
 	global MINUTES_I_WANNA_GET_MESSAGE
 	utc_offset_heroku = time.localtime().tm_gmtoff / 3600
 	hour = HOUR_I_WANNA_GET_MESSAGE + ( int(utc_offset_heroku) - 2 ) # 2 is my offset
-	time2 = datetime.time(hour = hour , minute = MINUTES_I_WANNA_GET_MESSAGE, second = SECONDS_I_WANNA_GET_MESSAGE)
+	time2 = datetime.time(hour = hour , minute = MINUTES_I_WANNA_GET_MESSAGE, second = 0)
+	print(time2)
 	return time2
 	
 def printUpdate(bot,update):
@@ -165,6 +166,7 @@ updater.dispatcher.add_handler( MessageHandler( Filters.text , callback = printU
 j = updater.job_queue
 
 dayNumber = DayNameDict[ DAY_I_WANNA_GET_MESSAGE ]
+print(dayNumber)
 #                          must be a tuple
 j.run_daily(sendVnW, days=(dayNumber,), time = getMyTimeZoneTime() )
 
