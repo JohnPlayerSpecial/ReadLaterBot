@@ -13,15 +13,25 @@ import os
 import urllib
 from telegraph import Telegraph
 
+DayNameDict = { "LUNEDI" : 0,
+	       "MARTEDI" : 1,
+	       "MERCOLEDI" : 2,
+	       "GIOVEDI" : 3,
+	       "VENERDI" : 4,
+	       "SABATO" : 5,
+	       "DOMENICA" : 6,
+	      }
+
 STRING_DB = os.environ['DATABASE_URL'].replace("postgres","pq")
 TOKEN_ALERT = os.environ['TOKEN_ALERT']
 TOKEN_TELEGRAM = os.environ['TOKEN_TELEGRAM']
 TOKEN_TELEGRAM_2 = os.environ['TOKEN_TELEGRAM_2']
 TELEGRAPH_ACCOUNT = os.environ['TELEGRAPH_ACCOUNT']
-MY_CHAT_ID = int( os.environ['MY_CHAT_ID'] 
-HOUR_I_WANNA_GET_MESSAGE = int( os.environ['HOUR_I_WANNA_GET_MESSAGE'] 
-MINUTES_I_WANNA_GET_MESSAGE = int( os.environ['MINUTE_I_WANNA_GET_MESSAGE'] 
-	
+MY_CHAT_ID = int( os.environ['MY_CHAT_ID'] )
+HOUR_I_WANNA_GET_MESSAGE = int( os.environ['HOUR_I_WANNA_GET_MESSAGE'] )
+MINUTES_I_WANNA_GET_MESSAGE = int( os.environ['MINUTE_I_WANNA_GET_MESSAGE'] )
+DAY_I_WANNA_GET_MESSAGE = os.environ['DAY_I_WANNA_GET_MESSAGE'] 
+				  
 telegraph = Telegraph()
 telegraph.create_account(TELEGRAPH_ACCOUNT)
 
@@ -153,14 +163,10 @@ updater = Updater(TOKEN_TELEGRAM)
 dp = updater.dispatcher
 updater.dispatcher.add_handler( MessageHandler( Filters.text , callback = printUpdate) ) #Filters.entity("url")
 j = updater.job_queue
-'''
-0 = Mon
-1 = Tue
-2 = Wed
-...
-6 = Sun
-'''
-j.run_daily(sendVnW, days=(3,), time = getMyTimeZoneTime() )
+
+dayNumber = DayNameDict[ DAY_I_WANNA_GET_MESSAGE ]
+#                          must be a tuple
+j.run_daily(sendVnW, days=(dayNumber,), time = getMyTimeZoneTime() )
 
 updater.start_polling()
 updater.idle()
