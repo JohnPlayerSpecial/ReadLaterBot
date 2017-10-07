@@ -48,7 +48,7 @@ def sendVnW(bot, job):
 	botVnW = telegram.Bot(TOKEN_TELEGRAM_2)
 	html_content = ""
 	db = postgresql.open(STRING_DB)
-	ps = db.prepare("SELECT * FROM VistoNelWeb WHERE done=0;")
+	ps = db.prepare("SELECT * FROM VistoNelWeb WHERE done=0 ORDER BY timestamp ASC;")
 	resultsList = ps()
 	for item in resultsList:
 		url = item[1]
@@ -115,7 +115,7 @@ def getTimeAdded():
 	hour = datetime.datetime.time(datetime.datetime.now()).hour
 	minute = datetime.datetime.time(datetime.datetime.now()).minute
 	second = datetime.datetime.time(datetime.datetime.now()).second
-	dt = datetime.datetime.combine(datetime.date.today(), datetime.time(hour,minute,second)) + datetime.timedelta(seconds = utc_offset_heroku)
+	dt = datetime.datetime.combine(datetime.date.today(), datetime.time(hour,minute,second)) + datetime.timedelta(seconds = 7200)
 	
 	dateInsertion = dt.strftime("%a %-d %b %Y %-H:%M")
 	return dateInsertion
